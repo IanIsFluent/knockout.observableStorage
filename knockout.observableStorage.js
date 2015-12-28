@@ -13,13 +13,14 @@
 
       //Create observable from saved method
       var observable = saved(initialValue);
+      var key;
 
       //Persist the observable depending on the specified options
       if(options.persist.local) {
         //Only persist if the browser supports local storage
         if(localStorage) {
           //Get the storage key from the persist options
-          var key = options.persist.local;
+          key = options.persist.local;
 
           //Create the persist to storage functionality
           persistToStorage(observable, getLocalStorage(key), setLocalStorage(key),
@@ -30,7 +31,7 @@
         //Only persist if the browser supports session storage
         if(sessionStorage) {
           //Get the storage key from the persist options
-          var key = options.persist.session;
+          key = options.persist.session;
 
           //Create the persist to storage functionality
           persistToStorage(observable, getSessionStorage(key), setSessionStorage(key),
@@ -43,7 +44,7 @@
         var set = options.persist.set;
         var setChangeCallback = option.persist.setChangeCallback;
 
-        //Create the persist to storage functionality
+        //Create the custom persist to storage functionality
         persistToStorage(observable, get, set, setChangeCallback);
       }
 
@@ -128,6 +129,7 @@
 
   // }
 
+  //This method is called when 
   //Persists the observable using get and set functions. A set callback
   //function can also be provided to be able to notify the observable
   //that the data in the storage backend has been changed.
@@ -140,9 +142,16 @@
   //  set: the function to set the persisted value.
   //  setChangeCallback: the function to set the callback that gets 
   //    called when a change event occurs in the storage backend. 
-  //    The change handler   
+  //    The change callback is expecting to receive the new value
+  //    as the first parameter. 
   function persistToStorage(observable, get, set, setChangeCallback) {
     var storedValue;
+    var observableSubscription;
+
+    //Define a function that gets called when the observable is changed
+    var onObservableChanged = function observableChanged(newValue) {
+      set(newValue);
+    };
 
     //If a get function is defined, get the value
     if(get) {
@@ -156,17 +165,35 @@
 
     //If we have a set function, call it when the observable's value is changed
     if(set) {
-      observable.subscribe(function(newValue){
-        set(newValue);
-      });        
+      observableSubscription = observable.subscribe(onObservableChanged);        
     }
 
     //If we have a change callback function and a get function, 
     //set the change callback to a function that retrievs the new value 
     //whenever there's a change
-    if(setChangeCallback && get) {
-      setChangeCallback(function() {
-        observable(get());
+    if(setChangeCallback) {
+      setChangeCallback(function(newValue) {
+        //We only need to do something if the new value is different than the value
+        //in the observable. 
+        if(observable() !== newValue) {
+          //We have to break the "storage changed event -> observable is updated ->
+          //update storage on change -> storage changed event" cycle, so we'll
+          //unsubscribe from the observable change event, set the the new value, 
+          //and then resubscribe.
+
+          //Unsubscribe from the observable change event
+          if(observableSubscription) {
+            observableSubscription.dispose();
+          }
+          
+          //Set the observable to the new value
+          observable(newValue);
+
+          //Resubscribe to the observable change event
+          if(observableSubscription) {
+            observableSubscription = observable.subscribe(onObservableChanged);
+          } 
+        }   
       });
     }
   }

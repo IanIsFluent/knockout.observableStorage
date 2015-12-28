@@ -42,7 +42,7 @@
 
 - Add AMD functionality (see pull request in knockout.localStorage)
 	- Be sure to credit the submitter of that pull request
-	
+
 - Add this same functionality as a knockout extender (see knockout.persist for example) and provide an example to test
 
 - Create automated tests in test directory
@@ -55,4 +55,6 @@
 	- Produces a minified version that is placed in the root directory
 	- Adds a header with copyright, github repository, author, and related information to the minified version
 
-- Revise readme to provide good documentation discussing how to use this functionality, giving examples of each type of storage. If node.js example is done, discuss how that works and point to the example. 	
+- Revise readme to provide good documentation discussing how to use this functionality, giving examples of each type of storage. If node.js example is done, discuss how that works and point to the example. 
+	- Discuss issues encountered while implementing, particularly the "storage updated -> storage change event -> observable updated -> observable updated event -> update storage -> storage change event" cycle. We solve this by temporarily unsubscribing from the observable updated event when a storage change event occurs.
+	- We also save ourselves some unnecessary work if a storage change event occurs and the new value is the same as the value in the observable. 	
