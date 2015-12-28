@@ -1,0 +1,58 @@
+- Create an example app to test and demonstrate the persist functionality. Place in examples directory.
+	- Create a link to open a new tab/window with the same page
+	- Add example of local storage persistence
+		- Provide display of the current local storage value
+		- Allow the user to change the local storage value through the observable
+		- A separate window/tab should update when the local storage value has changed
+		- The local storage value should remain after the window/tab is closed and the user visits
+			the page again
+		- Allow the user to initiate a change that bypasses the observable and directly changes
+			the local storage value. The observable should update itself when the underlying storage
+			is changed
+	- Add example of session storage persistence
+		- Provide display of the current session storage value
+		- Allow the user to change the session storage value through the observable
+		- Session storage should be per window/tab. A change in one should not updated the other.
+		- Session storage should be cleared when a window/tab is closed.
+		- Allow the user to initiate a change that bypasses the observable and directly changes
+			the session storage value. The observable should update itself when the underlying storage
+			is changed
+	- Provide instructions regarding how to view the session and local storage values in the browser
+		to be able to see what is actually being stored. The user can even change these values
+		and the observables should automatically update. This is certainly possible in Chrome. Find out how to do this in other browsers.
+	- Add example of custom storage persistence to a Javascript variable
+		- Provide display of the current Javascript storage value
+		- Allow the user to change the Javascript storage value through the observable
+		- Storage is per page only lasts as long as the page. Reloading will reset the value. 
+		- Allow the user to initiate a change that bypasses the observable and directly changes
+			the Javascript variable. The observable should update itself when the underlying storage
+			is changed. We'll have to do this via a Javascript function so that we can detect
+			the change and call the callback. There's no event when a Javascript variable is changed.
+	- Add example of custom storage persistence to a node.js server (advanced option)
+		- Provide display of the current server storage value
+		- Allow the user to change the server storage value through the observable
+		- Not sure how the values should be stored on the server. 
+			- Session storage associated with a cookie?
+			- Provide authentication via Google or Github?
+		- Not sure how long the values will last
+		- Values should continue to persist for a while and across windows/tabs, although the 
+			details of this may vary depending on implementation
+		- Allow the user to initiate a change that bypasses the observable and directly changes
+			the value on the server via an API call. The observable should update itself when the underlying storage is changed. We'll probably have to do this by pushing an event over a web socket connection. We'll have to figure out how to establish a web socket connection.
+
+- Add AMD functionality (see pull request in knockout.localStorage)
+	- Be sure to credit the submitter of that pull request
+	
+- Add this same functionality as a knockout extender (see knockout.persist for example) and provide an example to test
+
+- Create automated tests in test directory
+	- Karma?
+	- Jasmine?
+	- Cucumber?
+
+- Create build process
+	- Gulp with gulpfile in root directory
+	- Produces a minified version that is placed in the root directory
+	- Adds a header with copyright, github repository, author, and related information to the minified version
+
+- Revise readme to provide good documentation discussing how to use this functionality, giving examples of each type of storage. If node.js example is done, discuss how that works and point to the example. 	
