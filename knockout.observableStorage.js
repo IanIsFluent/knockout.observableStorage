@@ -52,7 +52,7 @@
     };
   });
 
-  //Returns a curried function that get a particular key from local storage
+  //Returns a curried function that gets a value wit a particular key from local storage
   function getLocalStorage(key) {
     var getFunction = function getLocalStorageFunction() {
       var storedValue;
@@ -70,7 +70,7 @@
     return getFunction;
   }
 
-  //Returns a curried function that gets a particular key from session storage
+  //Returns a curried function that gets a value with a particular key from session storage
   function getSessionStorage(key) {
     var getFunction = function getSessionStorageFunction() {
       var storedValue;
@@ -169,7 +169,7 @@
     }
 
     //If we have a change callback function and a get function, 
-    //set the change callback to a function that retrievs the new value 
+    //set the change callback to a function that retrieves the new value 
     //whenever there's a change
     if(setChangeCallback) {
       setChangeCallback(function(newValue) {
@@ -198,7 +198,7 @@
     }
   }
 
-  //Returns a curried function that sets a particular key in local storage
+  //Returns a curried function that sets a value with a particular key in local storage
   function setLocalStorage(key) {
     var setFunction = function setLocalStorageFunction(value) {
       localStorage.setItem(key, ko.toJSON(newValue));      
@@ -222,7 +222,7 @@
     return setFunction;
   }
 
-  //Returns a curried function that sets a particular key in session storage
+  //Returns a curried function that sets a value with particular key in session storage
   function setSessionStorage(key) {
     var setFunction = function setSessionStorageFunction(value) {
       sessionStorage.setItem(key, ko.toJSON(newValue));      
