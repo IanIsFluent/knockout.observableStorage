@@ -40,9 +40,9 @@
         
       }
       else if(options.persist.get || options.persist.set) {
-        var get = options.persist.get;
-        var set = options.persist.set;
-        var setChangeCallback = option.persist.setChangeCallback;
+        var get = options.persist.get || function() {};
+        var set = options.persist.set || function() {};
+        var setChangeCallback = options.persist.setChangeCallback || function() {};
 
         //Create the custom persist to storage functionality
         persistToStorage(observable, get, set, setChangeCallback);
@@ -187,7 +187,7 @@
           }
           
           //Set the observable to the new value
-          observable(newValue);
+          observable(JSON.parse(newValue));
 
           //Resubscribe to the observable change event
           if(observableSubscription) {
@@ -201,7 +201,7 @@
   //Returns a curried function that sets a value with a particular key in local storage
   function setLocalStorage(key) {
     var setFunction = function setLocalStorageFunction(value) {
-      localStorage.setItem(key, ko.toJSON(newValue));      
+      localStorage.setItem(key, ko.toJSON(value));      
     };
 
     return setFunction;
@@ -225,7 +225,7 @@
   //Returns a curried function that sets a value with particular key in session storage
   function setSessionStorage(key) {
     var setFunction = function setSessionStorageFunction(value) {
-      sessionStorage.setItem(key, ko.toJSON(newValue));      
+      sessionStorage.setItem(key, ko.toJSON(value));      
     };
 
     return setFunction;

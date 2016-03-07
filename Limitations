@@ -1,0 +1,3 @@
+Limitations:
+
+- If there are two observables on the same page that persist using the same local/session storage key, they will not automatically sync with each other when one is changed. The browser will not raise a storage change event on the same page where the storage was changed.

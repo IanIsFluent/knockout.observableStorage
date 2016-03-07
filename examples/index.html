@@ -1,50 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title> knockout.localStorage.js Examples</title>
-    <script src="../support/knockout-latest.js"></script>
-    <script src="../knockout.localStorage.js"></script>
+    <title>knockout.observableStorage Example Page</title>
+    <style type="text/css">
+      .textsection
+      {
+        margin-top: 10px;
+      }
+    </style>
+    <script src="knockout-3.4.0.min.js"></script>
+    <script src="../knockout.observableStorage.js"></script>
   </head>
   <body>
+    This page contains examples of using knockout.observableStorage. It won't always work when loaded into
+    the browser as a file, as some browers don't allow storage events to be fired when loaded from a file.
+    It has to be run via a web server to get full functionality.
     <p>
-      <label for="default">Default - ko.observable()</label><br>
-      <input id="default" data-bind="value: name"></input>
-      <output data-bind="value: name()" ></output>
+    <a target="_blank" href="">Open a another instance of this page</a>
     </p>
     <p>
-      <label for="initial">Initial Value - ko.observable('Jim')</label><br>
-      <input id="initial" data-bind="value: nameInitial"></input>
-      <output data-bind="value: nameInitial()" ></output>
+    <div><strong>Default Observable</strong></div>
+      <div class="textsection">This is an ordinary observable. It will not be persisted after 
+      a page reload</div>
+      <div class="textsection">
+        <label for="default">Observable Value:</label>
+        <input id="default" data-bind="textInput: defaultValue"></input>
+        <span data-bind="text: defaultValue" ></span>
+      </div>
     </p>
     <p>
-      <label for="persist">localStorage - ko.observable(null, {persist: 'namePersist'})</label><br>
-      <input id="persist" data-bind="value: namePersist"></input>
-      <output data-bind="value: namePersist()" ></output>
+      <div><strong>Local Storage Observable</strong></div>
+      <div class="textsection">This observable will be persisted when the page is refreshed and will sync
+      with other instances of this page in different tabs and windows. You can also change the local storage
+      value via the developer tools and watch it update on the page.</div>
+      <div class="textsection">
+        <label for="local">Observable Value:</label>
+        <input id="local" data-bind="textInput: localStorageValue"></input>
+        <span data-bind="text: localStorageValue"></span>
+      </div>
     </p>
     <p>
-      <label for="persistInitial">localStorage w/ Initial Value - ko.observable('James', {persist: 'nameInitialPersist'})</label><br>
-      <input id="default" data-bind="value: nameInitialPersist"></input>
-      <output data-bind="value: nameInitialPersist()" ></output>
+      <div><strong>Session Storage Observable</strong></div>
+      <div class="textsection">This observable will be persisted when the page is refreshed, but it is
+      local to the browser tab. Other tabs will not share the value and the value will disappear.
+      when the tab is closed. You can also change the local storage value via the developer tools 
+      and watch it update on the page.</div>
+      <div class="textsection">
+        <label for="session">Observable Value:</label>
+        <input id="session" data-bind="textInput: sessionStorageValue"></input>
+        <span data-bind="text: sessionStorageValue"></span>
+      </div>
+    </p>
+    <p>
+      <div><strong>Custom Observable</strong></div>
+      <div class="textsection">This observable will be persisted using custom get/set methods. 
+      In this particular example, the custom get/set methods read and write to a Javascript
+      variable, but they could contain code to persist values to a server.</div>
+      <div class="textsection">
+        <label for="custom">Observable Value:</label>
+        <input id="custom" data-bind="textInput: customStorageValue"></input>
+        <span data-bind="text: customStorageValue" ></span>
+      </div>
     </p>
       
     <script>
+      var customValue = "Custom Value";
+      
       var viewModel = {
-        // Default Observable (no initial value, no localStorage)
-        name: ko.observable(),
+        // Default Observable
+        defaultValue: ko.observable(),
 
-        // Observable with initital value (no localStorage) 
-        nameInitial: ko.observable('Jim'),
+        // Observable bound to local storage
+        localStorageValue: ko.observable("Local Storage Value", 
+          { persist: {local: "localKey"} }),
 
-        // Observable with localStorage Persistence 
-        namePersist: ko.observable(null, {persist: 'namePersist'}),
+        // Observable bound to session storage
+        sessionStorageValue: ko.observable("Session Storage Value", 
+          { persist: {session: "localKey"} }),
 
-        // Observable with initial value and localStorage Persistence
-        nameInitialPersist: ko.observable('James', {persist: 'nameDefaultPersis'})
+        // Observable bound to custom storage
+        customStorageValue: ko.observable('Custom Storage Value', 
+          { persist: { get: getCustomValue, set: getCustomValue } })
+      };
 
+      function getCustomValue() {
+        return customValue;
+      }
+
+      function setCustomValue(value) {
+        customValue = value;
       }
 
       ko.applyBindings(viewModel);
-
     </script>
   </body>
 </html>
