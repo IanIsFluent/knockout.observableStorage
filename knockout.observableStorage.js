@@ -1,56 +1,44 @@
 (function(ko){
-  // Wrap ko.observable and ko.observableArray
-  var methods = ['observable', 'observableArray'];
-
-  //Wrap the observable functions with one of our own that takes care 
-  //of persistance
-  ko.utils.arrayForEach(methods, function(method){
-    var saved = ko[method];
-    
-    ko[method] = function(initialValue, options){
+  ko.extenders.persist = function(target, options) {
       options = options || {};
-      options.persist = options.persist || {};
 
-      //Create observable from saved method
-      var observable = saved(initialValue);
+      var observable = target;
       var key;
 
       //Persist the observable depending on the specified options
-      if(options.persist.local) {
+      if(options.local) {
         //Only persist if the browser supports local storage
         if(localStorage) {
           //Get the storage key from the persist options
-          key = options.persist.local;
+          key = options.local;
 
-          //Create the persist to storage functionality
+          //Create the persist to local storage functionality
           persistToStorage(observable, getLocalStorage(key), setLocalStorage(key),
             setLocalStorageChangeCallback(key));
         }
       }
-      else if(options.persist.session) {
+      else if(options.session) {
         //Only persist if the browser supports session storage
         if(sessionStorage) {
           //Get the storage key from the persist options
-          key = options.persist.session;
+          key = options.session;
 
-          //Create the persist to storage functionality
+          //Create the persist to session storage functionality
           persistToStorage(observable, getSessionStorage(key), setSessionStorage(key),
             setSessionStorageChangeCallback(key));
         }
         
       }
-      else if(options.persist.get || options.persist.set) {
-        var get = options.persist.get || function() {};
-        var set = options.persist.set || function() {};
-        var setChangeCallback = options.persist.setChangeCallback || function() {};
+      else if(options.get || options.set) {
+        var get = options.get || function() {};
+        var set = options.set || function() {};
+        var setChangeCallback = options.setChangeCallback || function() {};
 
         //Create the custom persist to storage functionality
         persistToStorage(observable, get, set, setChangeCallback);
       }
+  };
 
-      return observable;
-    };
-  });
 
   //Returns a curried function that gets a value wit a particular key from local storage
   function getLocalStorage(key) {
@@ -88,50 +76,8 @@
     return getFunction;
   }
 
-  // //Persists the observable to local storage
-  // //Parameters:
-  // //  observable: the observable that is to be synchronized
-  // //  key: the storage key
-  // function persistToLocalStorage(observable, key) {
-  //     var storedValue = undefined;
-
-  //     //If there is an existing value, load that value from storage
-  //     if(key && localStorage.hasOwnProperty(key)){
-  //       try{
-  //         storedValue = JSON.parse(localStorage.getItem(key));
-  //       }catch(e){};
-  //     }
-
-  //     //If the stored value exists, assign it to the observable
-  //     if(storedValue !== undefined) {
-  //       observable(storedValue);
-  //     }
-
-  //     //Subscribe to the observable, persisting any changes to storage
-  //     if(key){
-  //       observable.subscribe(function(newValue){
-  //         localStorage.setItem(key, ko.toJSON(newValue));
-  //       });
-
-  //       addEventListener("storage", function(event) {
-  //         if(event.key === key) {
-
-  //         }
-  //       });
-  //     }
-  // }
-
-  // //Persists the observable to session storage
-  // //Parameters:
-  // //  observable: the observable that is to be synchronized
-  // //  key: the storage key
-  // function persistToSessionStorage(observable, key) {
-
-  // }
-
-  //This method is called when 
   //Persists the observable using get and set functions. A set callback
-  //function can also be provided to be able to notify the observable
+  //function can also be provided to notify the observable
   //that the data in the storage backend has been changed.
   //Doing so generically like this allows us to pass to use a single
   //persistToStorage function, passing in the functions that do the

@@ -71,16 +71,16 @@
         defaultValue: ko.observable(),
 
         // Observable bound to local storage
-        localStorageValue: ko.observable("Local Storage Value", 
-          { persist: {local: "localKey"} }),
+        localStorageValue: ko.observable("Local Storage Value")
+          .extend({ persist: {local: "localKey"} }),
 
         // Observable bound to session storage
-        sessionStorageValue: ko.observable("Session Storage Value", 
-          { persist: {session: "localKey"} }),
+        sessionStorageValue: ko.observable("Session Storage Value")
+          .extend({ persist: {session: "localKey"} }),
 
         // Observable bound to custom storage
-        customStorageValue: ko.observable('Custom Storage Value', 
-          { persist: { get: getCustomValue, set: getCustomValue } })
+        customStorageValue: ko.observable('Custom Storage Value')
+          .extend({ persist: { get: getCustomValue, set: getCustomValue } })
       };
 
       function getCustomValue() {
