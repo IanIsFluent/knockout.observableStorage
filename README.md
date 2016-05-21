@@ -105,11 +105,11 @@ Take a look at the [example page](http://maultasche.github.io/observableStorage/
 
 The fields bound to local and session storage will be persisted when the page is reloaded. Other fields will not. If you open multiple instances of the example page, the changing the field bound to local storage will cause the field in the other page instance to be updated. Session storage fields are not shared between pages, but will be persisted and survive page reloads until the page is closed.
 
-The [source](../examples/index.html) for this example page can be found in the repository.
+The [source](./examples/index.html) for this example page can be found in the repository.
 
 ## History
 
-I started using Jim Hoskin's [knockout.localStorage](https://github.com/jimrhoskins/knockout.localStorage), but I needed more than just the local storage binding it provided. So I created knockout.observableStorage. This project was originally intended to add on to knockout.localStorage, but ended up being a complete rewrite.
+I started using Jim Hoskin's [knockout.localStorage](https://github.com/jimrhoskins/knockout.localStorage), but I needed more than just the local storage binding it provided. So I created knockout.observableStorage. This project was originally intended to add additional functionality to knockout.localStorage, but ended up being a complete rewrite.
 
 ## To Do
 
