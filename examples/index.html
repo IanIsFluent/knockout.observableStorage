@@ -66,9 +66,9 @@
         local to the browser tab. Other tabs will not share the value and the value will disappear.
         when the tab is closed. You can also change the local storage value via the developer tools 
         and watch it update on the page.</div>
-        <div class="textsection">
+        <div class="textsection input-group">
           <label for="session">Observable Value:</label>
-          <input id="session" data-bind="textInput: sessionStorageValue"></input>          
+          <input id="session" class="form-control" data-bind="textInput: sessionStorageValue"></input>          
         </div>
         <div class="textsection">
           <span data-bind="text: sessionStorageValue"></span>
@@ -84,9 +84,9 @@
         <div class="textsection">This observable will be persisted using custom get/set methods. 
         In this particular example, the custom get/set methods read and write to a Javascript
         variable, but they could contain code to persist values to a server.</div>
-        <div class="textsection">
+        <div class="textsection input-group">
           <label for="custom">Observable Value:</label>
-          <input id="custom" data-bind="textInput: customStorageValue"></input>      
+          <input id="custom" class="form-control" data-bind="textInput: customStorageValue"></input>      
         </div>
         <div class="textsection">
             <span data-bind="text: customStorageValue" ></span>
@@ -110,7 +110,7 @@
 
         // Observable bound to session storage
         sessionStorageValue: ko.observable("Session Storage Value")
-          .extend({ persist: {session: "localKey"} }),
+          .extend({ persist: {session: "sessionKey"} }),
 
         // Observable bound to custom storage
         customStorageValue: ko.observable('Custom Storage Value')

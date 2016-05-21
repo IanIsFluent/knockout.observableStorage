@@ -1,5 +1,4 @@
 - Create an example app to test and demonstrate the persist functionality. Place in examples directory.
-	- Add bootstrap styling to the page to make it look nicer
 	- Add example of custom storage persistence to a node.js server (advanced option)
 		- Provide display of the current server storage value
 		- Allow the user to change the server storage value through the observable
@@ -15,7 +14,6 @@
 - Add AMD functionality (see pull request in knockout.localStorage)
 	- Be sure to credit the submitter of that pull request
 
-- Add this same functionality as a knockout extender (see knockout.persist for example) and provide an example to test
 
 - Create automated tests in test directory
 	- Karma?
