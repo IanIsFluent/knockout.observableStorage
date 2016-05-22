@@ -16,6 +16,10 @@ Persisting to another data source using customized functions can also be done. S
 
 An observable extended with knockout.observableStorage will use the initial value passed into the observable function as the default value. If the data store already has a value (i.e., the value is not undefined), the initial value will be loaded from the data store. If the value in the data store is undefined, the value passed into the observable function will be made the initial value and persisted to the data store.
 
+## Value Serialization
+
+Values in an observable are serialized to JSON when they are saved and deserialized from JSON when they are retrieved. This allows us to store complex data.
+
 ## How to Use It
 
 This extender uses the "persist" keyword, which is followed up by the options for persisting the observable. See the examples below.
